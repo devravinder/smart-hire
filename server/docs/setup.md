@@ -12,17 +12,14 @@
       - use ollama & pull
         - embeddings: nomic-embed-text:v1.5
         - chat: qwen2.5:0.5b
-        
-      - set env varable `MODELS_ENV=LOCAL` 
+
+      - set env varable `MODELS_ENV=LOCAL`
 
    3.hybrid
      - refer `models.ts` and configure
-
-
-
 
 2. Postgres db to store messages
    - pass db env variables in .env
 3. qdrant db for vector storage
    - pass qdrant url in .env
-4. 
+4.
