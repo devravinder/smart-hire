@@ -1,88 +1,64 @@
-import { ChatOllama, OllamaEmbeddings, Ollama } from "@langchain/ollama";
+import { ChatOllama, OllamaEmbeddings } from "@langchain/ollama";
 import { ChatGroq } from "@langchain/groq";
-import { ChatOpenAI } from "@langchain/openai";
 import {
-  GoogleGenerativeAIEmbeddings,
-  ChatGoogleGenerativeAI,
+  GoogleGenerativeAIEmbeddings
 } from "@langchain/google-genai";
 
-const grokOpenRouter = new ChatOpenAI({
-  model: "x-ai/grok-4-fast:free",
-  apiKey: process.env.OPEN_ROUTER_API_KEY,
-  temperature: 0.9,
-  configuration: {
-    baseURL: "https://openrouter.ai/api/v1",
-  },
-});
 
-//=============
-
-const grok = new ChatGroq({
+const grok=() => new ChatGroq({
   apiKey: process.env.GROK_API_KEY,
-  model: "qwen/qwen3-32b", //"qwen/qwen3-32b", // gemma2-9b-it, llama-3.1-8b-instant, openai/gpt-oss-120b
+  model: process.env.GROK_MODEL,
   temperature: 0.9,
-  // maxTokens: 500, // employee data generation requires more
-});
-
-//=====
-
-const googleEmbeddings = new GoogleGenerativeAIEmbeddings({
-  model: "text-embedding-004", // 'gemini-embedding-001'
-  apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY,
+  // maxTokens: 500
 });
 
 // https://ai.google.dev/gemini-api/docs/models#
-const googleModel = new ChatGoogleGenerativeAI({
+const googleEmbeddings = ()=>new GoogleGenerativeAIEmbeddings({
+  model: process.env.GOOGLE_EMBEDDINGS_MODEL,
   apiKey: process.env.GOOGLE_AI_STUDIO_API_KEY,
-  model: "gemini-2.5-flash-lite", //"gemini-2.5-flash",
-  temperature: 0.9,
-  maxRetries: 2,
 });
+
 
 //===
 
-const localEmbeddings = new OllamaEmbeddings({
-  model: "nomic-embed-text:v1.5",
-  baseUrl: "http://localhost:11434",
+const localEmbeddings =()=> new OllamaEmbeddings({
+  model: process.env.LOCAL_OLLAMA_EMBEDDING_MODEL,
+  baseUrl: process.env.LOCAL_OLLAMA_BASE_URL,
 });
 
-const localOllama = new ChatOllama({
-  model: "qwen2.5:0.5b",
+const localOllama = ()=>new ChatOllama({
+  model: process.env.LOCAL_OLLAMA_MODEL,
   temperature: 0.9,
   maxRetries: 2,
-  baseUrl: "http://localhost:11434",
+  baseUrl: process.env.LOCAL_OLLAMA_BASE_URL,
 });
 
-const cloud = {
-  chatModel: grok,
-  embeddingModel: googleEmbeddings,
-};
+const cloud = ()=> ({
+  chatModel: grok(),
+  embeddingModel: googleEmbeddings(),
+});
 
-const google = {
-  chatModel: googleModel,
-  embeddingModel: googleEmbeddings,
-};
 
-const local = {
-  chatModel: localOllama,
-  embeddingModel: localEmbeddings,
-};
+const local = ()=>({
+  chatModel: localOllama(),
+  embeddingModel: localEmbeddings(),
+});
 
-const hybrid = {
-  chatModel: grok,
-  embeddingModel: localEmbeddings,
-};
+const hybrid = ()=>({
+  chatModel: grok(),
+  embeddingModel: localEmbeddings(),
+});
 
 const models = (() => {
   switch (process.env.MODELS_ENV) {
     case "CLOUD":
-      return cloud;
+      return cloud();
 
-    case "HYBROD":
-      return hybrid;
+    case "HYBRID":
+      return hybrid();
 
     default:
-      return local;
+      return local();
   }
 })();
 
@@ -92,6 +68,7 @@ export default models;
  combinations:
 
      chatModel - embeddingModel
+==================================
  1.  googleModel - googleEmbeddings
  2.  groq  - localEmbeddings
  3.  localOllama - localEmbeddings

@@ -1,6 +1,6 @@
 import pg from "pg";
 import { PostgresSaver } from "@langchain/langgraph-checkpoint-postgres";
-import { BaseCheckpointSaver, MemorySaver } from "@langchain/langgraph";
+import { MemorySaver } from "@langchain/langgraph";
 
 const postgresCheckpointer = async () => {
   const {

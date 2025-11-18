@@ -7,10 +7,14 @@ import { loadTextAsSigleDoc } from "./loaders/text-loader.js";
 
 
 const pdfPath = "./data/Ravinder_Reddy _Full_Stack_Developer_ CV.pdf"
+console.log("Loading pdf: ",pdfPath)
 const pdfDocument = await loadPdfAsSingleDocument(pdfPath)
+console.log("loading success")
 
 const mdPath = "./data/AI_developer_CV.md"
+console.log("loading markdown: ", mdPath)
 const mdDocument = await loadTextAsSigleDoc(mdPath)
+console.log("loading success")
 
 async function seedDatabase(): Promise<void> {
   try {

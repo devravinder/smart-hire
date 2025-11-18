@@ -18,7 +18,7 @@ const start = () => {
 };
 
 const setup = async () => {
-  console.log(" some setup ");
+  console.log("pre-start: critical setup ");
 };
 
 setup()

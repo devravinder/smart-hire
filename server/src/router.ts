@@ -61,7 +61,7 @@ const allowedTypes = [
   mime.getType(".txt"),
 ];
 
-// we can store in temp file & asynchrnosly, we can convert to vector document
+// we can store in temp file & asynchrnosly we can convert to vector document
 chatRouter.post(
   "/upload",
   async ({ body: { file }, set }) => {

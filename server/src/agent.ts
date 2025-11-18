@@ -31,9 +31,7 @@ const GraphState = z.object({
 
 type RagState = z.infer<typeof GraphState>;
 
-// Define the graph state
 
-// Define the tools for the agent to use
 const developerLookupTool = tool(
   async ({ query, n = 10 }) => {
     console.log("Developer lookup tool called");
@@ -57,12 +55,10 @@ const developerLookupTool = tool(
 
 const tools = [developerLookupTool];
 
-// We can extract the state typing via `GraphState.State`
 const toolNode = new ToolNode<RagState>(tools);
 
 const model = chatModel.bindTools(tools);
 
-// Define the function that determines whether to continue or not
 const shouldContinue = (state: RagState) => {
   const messages = state.messages;
   const lastMessage = messages[messages.length - 1] as AIMessage;
@@ -76,7 +72,6 @@ const shouldContinue = (state: RagState) => {
   return END;
 };
 
-// Define the function that calls the model
 const callModel = async (state: RagState) => {
   const prompt = ChatPromptTemplate.fromMessages([
     [
