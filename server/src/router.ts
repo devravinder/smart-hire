@@ -2,10 +2,12 @@ import { Elysia } from "elysia";
 import { randomUUID } from "crypto";
 import mime from 'mime/lite';
 
-import { callAgent, getConversations, getHistory } from "./agent.js";
+import { callAgent, getConversations, getConversationHistory, deleteConversation, deleteAllConversations } from "./agent.js";
 import {
   chatSchema,
   conversationsSchema,
+  deleteAllConversationSchema,
+  deleteConversationSchema,
   fileUploadSchema,
   historySchema,
 } from "./api-schema.js";
@@ -39,7 +41,7 @@ chatRouter.get(
   "/history/:conversationId",
   async ({ params: { conversationId }, set }) => {
     set.headers["content-type"] = "application/json";
-    const res = await getHistory(conversationId);
+    const res = await getConversationHistory(conversationId);
     return res;
   },
   historySchema
@@ -53,6 +55,23 @@ chatRouter.get(
     return conversations;
   },
   conversationsSchema
+);
+
+chatRouter.delete(
+  "/conversations/:conversationId",
+  async ({ params: { conversationId }, set}) => {
+    await deleteConversation(conversationId);
+  },
+  deleteConversationSchema
+);
+
+
+chatRouter.delete(
+  "/conversations",
+  async () => {
+    await deleteAllConversations();
+  },
+  deleteAllConversationSchema
 );
 
 const allowedTypes = [

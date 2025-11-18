@@ -45,6 +45,22 @@ export const conversationsSchema = {
   }
 };
 
+export const deleteConversationSchema = {
+  params: t.Object({
+    conversationId: t.String(),
+  }),
+  detail:{
+    tags:["chat"]
+  }
+};
+
+export const deleteAllConversationSchema = {
+  detail:{
+    tags:["chat"]
+  }
+};
+
+
 export const fileUploadSchema = {
   body: t.Object({
     file: t.File(),

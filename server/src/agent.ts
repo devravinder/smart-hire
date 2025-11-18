@@ -23,6 +23,9 @@ import { checkpointSaver } from "./checkpointSaver.js";
 
 const { chatModel } = models;
 
+const DEFAULT_USER = "default_user";
+// bg: user_id is not storing in the db
+
 const GraphState = z.object({
   messages: z
     .array(z.custom<BaseMessage>())
@@ -30,7 +33,6 @@ const GraphState = z.object({
 });
 
 type RagState = z.infer<typeof GraphState>;
-
 
 const developerLookupTool = tool(
   async ({ query, n = 10 }) => {
@@ -112,7 +114,7 @@ const app = workflow.compile({ checkpointer: checkpointSaver });
 export async function callAgent(
   query: string,
   thread_id: string,
-  user_id: string = "default_user"
+  user_id: string = DEFAULT_USER
 ) {
   const finalState = await app.invoke(
     {
@@ -125,7 +127,7 @@ export async function callAgent(
 }
 export const getMessages = async (
   thread_id: string,
-  user_id: string = "default_user"
+  user_id: string = DEFAULT_USER
 ): Promise<BaseMessage[]> => {
   const snapshot = await app.getState({ configurable: { thread_id, user_id } });
   return snapshot?.values?.messages ?? [];
@@ -146,9 +148,9 @@ const filterConvesationMessages = (
   });
 };
 
-export const getHistory = async (
+export const getConversationHistory = async (
   thread_id: string,
-  user_id: string = "default_user"
+  user_id: string = DEFAULT_USER
 ): Promise<Message[]> => {
   const messages = await getMessages(thread_id, user_id);
 
@@ -164,8 +166,7 @@ export const getHistory = async (
   }));
 };
 
-export const getConversations = async (user_id: string = "default_user") => {
-
+export const getConversations = async (user_id: string = DEFAULT_USER) => {
   // this is not efficient, we can use db queries directly instead of this
 
   const checkpoints = await checkpointSaver.list({ configurable: { user_id } });
@@ -175,5 +176,22 @@ export const getConversations = async (user_id: string = "default_user") => {
   for await (const tuple of checkpoints) {
     threads.add(tuple.config.configurable?.thread_id);
   }
-  return [...threads]
+  return [...threads];
+};
+
+export const deleteConversation = async (
+  thread_id: string,
+  user_id: string = DEFAULT_USER
+) => {
+  await checkpointSaver.deleteThread(thread_id);
+};
+
+export const deleteAllConversations = async (
+  user_id: string = DEFAULT_USER
+) => {
+  const threads = await getConversations(user_id);
+
+  const reqs = threads.map((thread_id) => deleteConversation(thread_id));
+
+  await Promise.allSettled(reqs);
 };
