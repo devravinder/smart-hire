@@ -164,7 +164,20 @@ export interface operations {
                 };
             };
         };
-        responses: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        content: string;
+                        conversationId: string;
+                    };
+                };
+            };
+        };
     };
     postApiChat: {
         parameters: {
@@ -188,7 +201,20 @@ export interface operations {
                 };
             };
         };
-        responses: never;
+        responses: {
+            /** @description Response for status 200 */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        content: string;
+                        conversationId: string;
+                    };
+                };
+            };
+        };
     };
     getApiHistoryByConversationId: {
         parameters: {

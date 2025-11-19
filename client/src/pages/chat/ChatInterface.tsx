@@ -43,7 +43,7 @@ export function ChatInterface({ history }: { history: Message[] }) {
       return;
     }
 
-    const aiMessage = createMessage("ai", content.response);
+    const aiMessage = createMessage("ai", content.content);
     setMessages((prev) => [...prev, aiMessage]);
 
     if (!conversationId){

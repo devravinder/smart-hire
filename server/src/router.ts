@@ -31,8 +31,8 @@ chatRouter.post(
       set.status = 400;
       throw "Missing message";
     }
-    const response = await callAgent(message, conversationId);
-    return { response, conversationId };
+    const content = await callAgent(message, conversationId);
+    return { content, conversationId };
   },
   chatSchema
 );

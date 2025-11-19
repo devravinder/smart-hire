@@ -17,8 +17,8 @@ export const chatSchema = {
   params: t.Object({
     conversationId: t.Optional(t.String()),
   }),
-  responses: t.Object({
-    response: t.String(),
+  response: t.Object({
+    content: t.String(),
     conversationId: t.String(),
   }),
   detail:{
