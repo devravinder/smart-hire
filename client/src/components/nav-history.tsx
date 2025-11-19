@@ -22,12 +22,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import apiClient from "@/services/apiClient";
-import { NavLink, useLoaderData, useRevalidator } from "react-router";
+import { NavLink, useLoaderData, useNavigate, useRevalidator } from "react-router";
 
 export function NavHistory() {
   const { isMobile } = useSidebar();
   const conversations = useLoaderData<string[]>();
   const revalidator = useRevalidator();
+  const navigate = useNavigate()
 
   const deleteConversation = async (conversationId: string) => {
     await apiClient.DELETE("/api/conversations/{conversationId}", {
@@ -37,10 +38,15 @@ export function NavHistory() {
         },
       },
     });
+    await navigate("/chat")
+    // revalidator.revalidate() will not trigger the loader if shouldRevalidate returns false in the route
     await revalidator.revalidate();
+  
   };
   const deleteAllConversations = async () => {
-    console.log("---delete all");
+    await apiClient.DELETE("/api/conversations");
+    await navigate("/chat")
+    await revalidator.revalidate();
   };
 
   return (

@@ -24,9 +24,10 @@ export default function Routes() {
     {
       Component: MainLayout,
       loader: conversationLoader,
-      shouldRevalidate:({ currentParams, nextParams })=>{
-        return (!currentParams.conversationId) && (!!nextParams.conversationId);
-      },
+      // revalidator.revalidate() will not trigger the loader if shouldRevalidate returns false.
+      // shouldRevalidate:({ currentParams, nextParams })=>{
+      //   return (!currentParams.conversationId) && (!!nextParams.conversationId);
+      // },
       children: [
         { index: true, element: <Navigate to={"/chat"} replace /> },
         {
