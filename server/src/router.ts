@@ -61,6 +61,7 @@ chatRouter.delete(
   "/conversations/:conversationId",
   async ({ params: { conversationId }, set}) => {
     await deleteConversation(conversationId);
+    return {message:"Delete success"}
   },
   deleteConversationSchema
 );
@@ -70,6 +71,7 @@ chatRouter.delete(
   "/conversations",
   async () => {
     await deleteAllConversations();
+    return {message:"Delete success"}
   },
   deleteAllConversationSchema
 );

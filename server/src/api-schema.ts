@@ -51,13 +51,19 @@ export const deleteConversationSchema = {
   }),
   detail:{
     tags:["chat"]
-  }
+  },
+  response: t.Object({
+    message: t.String()
+  }),
 };
 
 export const deleteAllConversationSchema = {
   detail:{
     tags:["chat"]
-  }
+  },
+  response: t.Object({
+    message: t.String()
+  }),
 };
 
 
