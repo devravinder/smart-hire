@@ -7,8 +7,6 @@ export default function ProtectedRoute({ children }:{
 }) {
   const { session, loading } = useAuth();
 
-  console.log({session})
-
   if (loading) return <div>Loading...</div>;
 
   if (!session) return <Navigate to="/auth/login" replace />;

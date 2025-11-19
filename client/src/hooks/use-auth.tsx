@@ -69,7 +69,9 @@ export default function AuthProvider({children}:AuthProps) {
       await supabase.auth.signInWithOAuth({
   provider:'google',
   options: {
-    redirectTo: import.meta.env.VITE_SUPABASE_GOOGLE_AUTH_REDIRECT_URL,
+    redirectTo: `${window.location.origin}/` 
+    //redirectTo: import.meta.env.VITE_SUPABASE_GOOGLE_AUTH_REDIRECT_URL,
+    // both are working
   },
 }) 
   }

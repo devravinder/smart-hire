@@ -35,7 +35,7 @@ const data = {
     },
     {
       name: "Settings",
-      to: "/settings",
+      to: "/chat",
       icon: Settings,
     },
   ],

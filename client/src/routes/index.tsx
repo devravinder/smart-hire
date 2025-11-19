@@ -23,6 +23,14 @@ export default function Routes() {
     {
       Component: MainLayout,
       loader: conversationLoader,
+      shouldRevalidate: ({ currentParams, nextParams, nextUrl }) => {
+        if(nextUrl.search.includes("refetch=true"))
+           return true;
+        if (!currentParams.conversationId && !nextParams.conversationId)
+          return false;
+        return (currentParams.conversationId &&
+          !nextParams.conversationId) as boolean;
+      },
       children: [
         { index: true, element: <Navigate to={"/chat"} replace /> },
         {
@@ -30,6 +38,7 @@ export default function Routes() {
           loader: chatHistoryLoader,
           Component: ChatPge,
           shouldRevalidate: ({ currentParams, nextParams }) => {
+            console.log({currentParams, nextParams})
             return currentParams.conversationId !== nextParams.conversationId;
           },
         },
