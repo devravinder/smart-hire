@@ -3,11 +3,12 @@ import { ScrollArea } from "../../components/ui/scroll-area.js";
 import { ChatMessage } from "./ChatMessage.js";
 import { ChatInput } from "./ChatInput.js";
 import { apiClient, type Message } from "@/services/apiClient.js";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useRevalidator } from "react-router";
 
 export function ChatInterface({ history }: { history: Message[] }) {
   const { conversationId } = useParams();
   const navigate = useNavigate();
+  const revalidator = useRevalidator()
 
   const [messages, setMessages] = useState<Message[]>(history);
   const [isTyping, setIsTyping] = useState(false);
@@ -42,10 +43,13 @@ export function ChatInterface({ history }: { history: Message[] }) {
       return;
     }
 
-    const aiMessage = createMessage("ai", content.response);
+    const aiMessage = createMessage("ai", content.content);
     setMessages((prev) => [...prev, aiMessage]);
 
-    if (!conversationId) navigate(`/chat/${content.conversationId}`);
+    if (!conversationId){
+      navigate(`/chat/${content.conversationId}`);
+      await revalidator.revalidate()
+    }
   };
 
   const scrollToBottom = () => {

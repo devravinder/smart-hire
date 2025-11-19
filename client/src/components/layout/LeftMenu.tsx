@@ -1,5 +1,3 @@
-import { Fragment } from "react/jsx-runtime";
-
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarTrigger, SidebarProvider } from "../ui/sidebar";
 

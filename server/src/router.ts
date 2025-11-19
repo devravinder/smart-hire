@@ -31,8 +31,8 @@ chatRouter.post(
       set.status = 400;
       throw "Missing message";
     }
-    const response = await callAgent(message, conversationId);
-    return { response, conversationId };
+    const content = await callAgent(message, conversationId);
+    return { content, conversationId };
   },
   chatSchema
 );
@@ -61,6 +61,7 @@ chatRouter.delete(
   "/conversations/:conversationId",
   async ({ params: { conversationId }, set}) => {
     await deleteConversation(conversationId);
+    return {message:"Delete success"}
   },
   deleteConversationSchema
 );
@@ -70,6 +71,7 @@ chatRouter.delete(
   "/conversations",
   async () => {
     await deleteAllConversations();
+    return {message:"Delete success"}
   },
   deleteAllConversationSchema
 );

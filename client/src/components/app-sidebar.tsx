@@ -1,101 +1,89 @@
 import {
-  ChevronDown,
-  History,
+  AudioWaveform,
+  Command,
+  GalleryVerticalEnd,
+  MessageSquarePlus,
   Search,
-  Settings,
-  SquarePen
+  Settings
 } from "lucide-react";
+import * as React from "react";
 
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { NavHistory } from "@/components/nav-history";
+import { NavMain } from "@/components/nav-main";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
-  SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem
+  SidebarRail,
 } from "@/components/ui/sidebar";
 
-import { NavLink, useLoaderData } from "react-router";
+// This is sample data.
+const data = {
+  user: {
+    name: "Ravinder Reddy",
+    email: "m@example.com",
+    avatar: "/favicon.jpg",
+  },
+  teams: [
+    {
+      name: "Acme Inc",
+      logo: GalleryVerticalEnd,
+      plan: "Enterprise",
+    },
+    {
+      name: "Acme Corp.",
+      logo: AudioWaveform,
+      plan: "Startup",
+    },
+    {
+      name: "Evil Corp.",
+      logo: Command,
+      plan: "Free",
+    },
+  ],
+  
+  main: [
+    {
+      name: "Search",
+      to: "/chat",
+      icon: Search,
+    },
+    {
+      name: "New Chat",
+      to: "/chat",
+      icon: MessageSquarePlus,
+    },
+    {
+      name: "Settings",
+      to: "/settings",
+      icon: Settings,
+    },
+  ],
+};
 
-
-
-export function AppSidebar() {
-
-  const conversations =  useLoaderData<string[]>()
-
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar>
-      <SidebarHeader>AI Recruter</SidebarHeader>
-
-      <div className="h-[1px] bg-border w-full my-1"></div>
-
+    <Sidebar collapsible="icon" {...props}>
+      <SidebarHeader>
+        <TeamSwitcher teams={data.teams} />
+      </SidebarHeader>
       <SidebarContent>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <NavLink to={`/chat`}>
-                <SquarePen />
-                <span>{"New Chat"}</span>
-              </NavLink>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <div>
-                <Settings />
-                <span>{"Settins"}</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-          <SidebarMenuItem>
-            <SidebarMenuButton asChild>
-              <div>
-                <Search />
-                <span>{"Search"}</span>
-              </div>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-
-          <SidebarMenuItem>
-            <Collapsible defaultOpen className="group/collapsible">
-              <SidebarMenuButton asChild>
-                <CollapsibleTrigger>
-                  <History />
-                  <span>{"History"}</span>
-                  <ChevronDown className="ml-auto transition-transform group-data-[state=open]/collapsible:rotate-180" />
-                </CollapsibleTrigger>
-              </SidebarMenuButton>
-              <SidebarGroup>
-                <CollapsibleContent>
-                  <SidebarGroupContent>
-                    <SidebarMenu>
-                      {conversations.map((item) => (
-                        <SidebarMenuItem key={item}>
-                          <SidebarMenuButton asChild>
-                            <NavLink to={`/chat/${item}`}>
-                              <span>{item}</span>
-                            </NavLink>
-                          </SidebarMenuButton>
-                        </SidebarMenuItem>
-                      ))}
-                    </SidebarMenu>
-                  </SidebarGroupContent>
-                </CollapsibleContent>
-              </SidebarGroup>
-            </Collapsible>
-          </SidebarMenuItem>
-        </SidebarMenu>
-        {/*  */}
-
-        {/*  */}
+        <SidebarGroup className="group-data-[collapsible=icon]:hidden sss">
+          <SidebarMenu>
+            <NavMain links={data.main} />
+            <NavHistory />
+          </SidebarMenu>
+        </SidebarGroup>
       </SidebarContent>
+      <SidebarFooter>
+        <NavUser user={data.user} />
+      </SidebarFooter>
+      <SidebarRail />
     </Sidebar>
   );
 }
