@@ -14,9 +14,7 @@ Open-source AI recruiting platform using LLMs + embeddings + vector search for a
 ## 🗂️ Project Structure
 
 - `server/` – Node.js backend, APIs, LLM logic
-- `client/` – Web UI (React/Vite/Next)
-- `qdrant` – Vector database
-- `postgres` – Metadata & messages
+- `client/` – Web UI (React+Vite)
 
 ## ⚡ Quick Local Setup
 
@@ -43,6 +41,8 @@ pnpm run seed   # optional
 pnpm run dev
 ```
 
+open api: <http://localhost:3001/openapi>
+
 ### 3. Frontend
 
 ```bash
@@ -51,16 +51,19 @@ pnpm install
 pnpm run dev
 ```
 
-→ <http://localhost:3000>
+UI: <http://localhost:3000>
 
-## 🔑 Required AI Keys (at least one of each)
+## 🔑 Required LLM AI Keys (at least one of each)
 
-| Purpose     | Recommended Model                     | Provider/Link                                      |
-|-------------|---------------------------------------|----------------------------------------------------|
-| Embeddings  | text-embedding-004                    | Google AI Studio                                   |
-| Chat        | qwen/qwen3-32b                        | Groq (fast) → <https://console.groq.com/keys>        |
+| Purpose     | Model                                         | Provider/Link                                                | Env                       |
+|-------------|-----------------------------------------------|--------------------------------------------------------------|---------------------------|
+| Embeddings  | `GOOGLE_EMBEDDINGS_MODEL=text-embedding-004`  | [Google AI Studio](https://aistudio.google.com/app/api-keys) | GOOGLE_AI_STUDIO_API_KEY=>your key> |
+| Chat        | `GROK_MODEL=qwen/qwen3-32b`                   | [Grok (fast)](https://console.groq.com/keys)                 | GROK_API_KEY=>your key> |
 
-Alternatives: OpenRouter, Gemini, Ollama (local)
+**Note**:-
+
+   1. Alternatives: OpenRouter, Gemini, Ollama (local)
+   2. you can change any model i.e GOOGLE_EMBEDDINGS_MODEL & GROK_MODEL
 
 ## 🧠 Model Modes
 
@@ -69,6 +72,8 @@ Alternatives: OpenRouter, Gemini, Ollama (local)
 | CLOUD  | Google text-embedding-004 | qwen3-32b (Groq)         | `MODELS_ENV=CLOUD`     |
 | LOCAL  | nomic-embed-text (Ollama) | qwen2.5:0.5b+ (Ollama)   | `MODELS_ENV=LOCAL`     |
 | HYBRID | Mix & match               | Mix & match              | Edit `server/models.ts`|
+
+**Note**:- for `LOCAL` mode,  Ollama needs be installed locally
 
 ## 🔗 Useful Links
 
