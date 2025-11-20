@@ -53,6 +53,9 @@ importers:
       elysia:
         specifier: ^1.4.13
         version: 1.4.13(@sinclair/typebox@0.34.41)(exact-mirror@0.2.2(@sinclair/typebox@0.34.41))(file-type@16.5.4)(openapi-types@12.1.3)(typescript@5.9.3)
+      jose:
+        specifier: ^6.1.2
+        version: 6.1.2
       langchain:
         specifier: ^1.0.1
         version: 1.0.1(@langchain/core@1.0.1(openai@6.7.0(ws@8.18.3)(zod@4.1.12)))(openai@6.7.0(ws@8.18.3)(zod@4.1.12))(zod-to-json-schema@3.24.6(zod@4.1.12))
@@ -1109,6 +1112,9 @@ packages:
 
   isstream@0.1.2:
     resolution: {integrity: sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==}
+
+  jose@6.1.2:
+    resolution: {integrity: sha512-MpcPtHLE5EmztuFIqB0vzHAWJPpmN1E6L4oo+kze56LIs3MyXIj9ZHMDxqOvkP38gBR7K1v3jqd4WU2+nrfONQ==}
 
   js-tiktoken@1.0.21:
     resolution: {integrity: sha512-biOj/6M5qdgx5TKjDnFT1ymSpM5tbd3ylwDtrQvFQSu0Z7bBYko2dF+W/aUkXUPuk6IVpRxk/3Q2sHOzGlS36g==}
@@ -2251,6 +2257,8 @@ snapshots:
   ieee754@1.2.1: {}
 
   isstream@0.1.2: {}
+
+  jose@6.1.2: {}
 
   js-tiktoken@1.0.21:
     dependencies:
