@@ -23,7 +23,9 @@ export const chatSchema = {
   }),
   detail:{
     tags:["chat"]
-  }
+  },
+  // middlewares
+  auth: true as const
 };
 
 
@@ -35,14 +37,17 @@ export const historySchema = {
   response: t.Array(chatMessage),
   detail:{
     tags:["chat"]
-  }
+  },
+  // middlewares
+  auth: true as const
 };
 
 export const conversationsSchema = {
   response: t.Array(t.String()),
   detail:{
     tags:["chat"]
-  }
+  },
+  auth: true as const
 };
 
 export const deleteConversationSchema = {
@@ -55,6 +60,8 @@ export const deleteConversationSchema = {
   response: t.Object({
     message: t.String()
   }),
+  // middlewares
+  auth: true as const
 };
 
 export const deleteAllConversationSchema = {
@@ -64,6 +71,8 @@ export const deleteAllConversationSchema = {
   response: t.Object({
     message: t.String()
   }),
+  // middlewares
+  auth: true as const
 };
 
 
@@ -80,4 +89,6 @@ export const fileUploadSchema = {
     success: t.Boolean(),
     message: t.String()
   }),
+  // middlewares
+  auth: true as const
 };

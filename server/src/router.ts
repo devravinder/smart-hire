@@ -1,8 +1,14 @@
 import { Elysia } from "elysia";
 import { randomUUID } from "crypto";
-import mime from 'mime/lite';
+import mime from "mime/lite";
 
-import { callAgent, getConversations, getConversationHistory, deleteConversation, deleteAllConversations } from "./agent.js";
+import {
+  callAgent,
+  getConversations,
+  getConversationHistory,
+  deleteConversation,
+  deleteAllConversations,
+} from "./agent.js";
 import {
   chatSchema,
   conversationsSchema,
@@ -15,14 +21,18 @@ import { loadPdfAsSingleDocument } from "./loaders/pdf-loader.js";
 import { vectorStore } from "./vectorStore.js";
 import { bufferToBlob } from "./loaders/loader-util.js";
 import { loadTextAsSigleDoc } from "./loaders/text-loader.js";
+import authMiddleware from "./auth/authMiddleware.js";
 
 const chatRouter = new Elysia({ prefix: "/api" });
 
-chatRouter.get("/", () => "Hello World");
+chatRouter
+.get("/", () => "Hello World");
 
-chatRouter.post(
+chatRouter
+.use(authMiddleware)
+.post(
   "/chat/:conversationId?",
-  async ({ body, params, set }) => {
+  async ({ body, params, set, jwt }) => {
     const { message } = body;
 
     const { conversationId = randomUUID() } = params;
@@ -31,47 +41,54 @@ chatRouter.post(
       set.status = 400;
       throw "Missing message";
     }
-    const content = await callAgent(message, conversationId);
+    const content = await callAgent(message, conversationId, jwt.email);
     return { content, conversationId };
   },
   chatSchema
 );
 
-chatRouter.get(
+chatRouter
+.use(authMiddleware)
+.get(
   "/history/:conversationId",
-  async ({ params: { conversationId }, set }) => {
+  async ({ params: { conversationId }, set, jwt }) => {
     set.headers["content-type"] = "application/json";
-    const res = await getConversationHistory(conversationId);
+    const res = await getConversationHistory(conversationId, jwt.email);
     return res;
   },
   historySchema
 );
 
-chatRouter.get(
+chatRouter
+.use(authMiddleware)
+.get(
   "/conversations",
-  async () => {
-    const conversations = await getConversations();
+  async ({jwt}) => {
+    const conversations = await getConversations(jwt.email);
 
     return conversations;
   },
   conversationsSchema
 );
 
-chatRouter.delete(
+chatRouter
+.use(authMiddleware)
+.delete(
   "/conversations/:conversationId",
-  async ({ params: { conversationId }, set}) => {
-    await deleteConversation(conversationId);
-    return {message:"Delete success"}
+  async ({ params: { conversationId }, jwt }) => {
+    await deleteConversation(conversationId, jwt.email);
+    return { message: "Delete success" };
   },
   deleteConversationSchema
 );
 
-
-chatRouter.delete(
+chatRouter
+.use(authMiddleware)
+.delete(
   "/conversations",
-  async () => {
-    await deleteAllConversations();
-    return {message:"Delete success"}
+  async ({jwt}) => {
+    await deleteAllConversations(jwt.email);
+    return { message: "Delete success" };
   },
   deleteAllConversationSchema
 );
@@ -83,7 +100,9 @@ const allowedTypes = [
 ];
 
 // we can store in temp file & asynchrnosly we can convert to vector document
-chatRouter.post(
+chatRouter
+.use(authMiddleware)
+.post(
   "/upload",
   async ({ body: { file }, set }) => {
     const type = file.type;

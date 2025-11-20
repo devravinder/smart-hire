@@ -34,6 +34,7 @@
     "@langchain/qdrant": "^1.0.0",
     "@langchain/textsplitters": "^1.0.0",
     "elysia": "^1.4.13",
+    "jose": "^6.1.2",
     "langchain": "^1.0.1",
     "memoirist": "^0.4.0",
     "mime": "^4.1.0",

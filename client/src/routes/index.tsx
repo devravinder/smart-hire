@@ -4,6 +4,7 @@ import { RouterProvider, createHashRouter, Navigate } from "react-router";
 import MainLayout from "@/components/layout/MainLayout";
 import chatHistoryLoader from "@/pages/chat/chatHistoryLoader";
 import conversationLoader from "@/pages/chat/conversationLoader";
+import LoginPage from "@/pages/auth/LoginPage";
 
 const Loader = () => <div>Loading...</div>;
 
@@ -16,29 +17,36 @@ const Loadable = (Component: ElementType) => (props: any) => {
   );
 };
 
-
-
 const ANY_MATCH = "*";
 export default function Routes() {
   const router = createHashRouter([
     {
       Component: MainLayout,
       loader: conversationLoader,
-      // revalidator.revalidate() will not trigger the loader if shouldRevalidate returns false.
-      // shouldRevalidate:({ currentParams, nextParams })=>{
-      //   return (!currentParams.conversationId) && (!!nextParams.conversationId);
-      // },
+      shouldRevalidate: ({ currentParams, nextParams, nextUrl }) => {
+        if(nextUrl.search.includes("refetch=true"))
+           return true;
+        if (!currentParams.conversationId && !nextParams.conversationId)
+          return false;
+        return (currentParams.conversationId &&
+          !nextParams.conversationId) as boolean;
+      },
       children: [
         { index: true, element: <Navigate to={"/chat"} replace /> },
         {
           path: "/chat/:conversationId?",
           loader: chatHistoryLoader,
           Component: ChatPge,
-          shouldRevalidate:({ currentParams, nextParams })=>{
-            return currentParams.conversationId !== nextParams.conversationId
-          }
+          shouldRevalidate: ({ currentParams, nextParams }) => {
+            console.log({currentParams, nextParams})
+            return currentParams.conversationId !== nextParams.conversationId;
+          },
         },
       ],
+    },
+    {
+      path: "/auth/login",
+      Component: LoginPage,
     },
     { path: "not-found", element: <Page404 /> },
 
@@ -49,8 +57,6 @@ export default function Routes() {
 }
 
 // main layout pages
-const ChatPge = Loadable(
-  lazy(() => import("@/pages/chat/ChatPage"))
-);
+const ChatPge = Loadable(lazy(() => import("@/pages/chat/ChatPage")));
 
 const Page404 = () => <div className="">404</div>;

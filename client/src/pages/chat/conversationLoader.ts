@@ -1,7 +1,7 @@
-import { apiClient } from "@/services/apiClient";
+import { getConversations } from "@/services/chatService";
 
 export const conversationLoader = async () => {
-  const { data: res, error } = await apiClient.GET("/api/conversations");
+  const { data: res, error } = await getConversations();
   if (error) return [];
   return res;
 };

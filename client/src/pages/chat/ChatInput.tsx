@@ -1,10 +1,10 @@
-import { useState, type MouseEventHandler } from "react";
-import { Send, Paperclip } from "lucide-react";
-import mime from "mime/lite";
-import { Button } from "../../components/ui/button.js";
-import { cn } from "../../lib/utils.js";
 import openFile from "@/lib/openFile.js";
-import apiClient from "@/services/apiClient.js";
+import { uploadFile } from "@/services/fileService.js";
+import { Paperclip, Send } from "lucide-react";
+import mime from "mime/lite";
+import { useState, type MouseEventHandler } from "react";
+import { Button } from "@/components/ui/button.js";
+import { cn } from "@/lib/utils.js";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
@@ -44,21 +44,7 @@ export function ChatInput({ onSendMessage, disabled }: ChatInputProps) {
     });
 
     const file = files[0];
-
-    const formData = new FormData();
-    formData.append("file", file);
-
-    const { data, error } = await apiClient.POST("/api/upload", {
-      body: {
-        file: file as unknown as string, // open api type issue
-      },
-      bodySerializer: (body) => {
-        const formData = new FormData();
-        formData.append("file", body.file);
-        return formData;
-      },
-    });
-
+    const { data, error } = await uploadFile(file);
     console.log({ data, error });
   };
 

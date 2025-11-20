@@ -22,4 +22,10 @@
    - pass db env variables in .env
 3. qdrant db for vector storage
    - pass qdrant url in .env
-4.
+
+## Oauth
+
+1. [Google](https://console.cloud.google.com/auth/audience?project=sso-with-openid-367504)
+2. [supabase](https://supabase.com/docs/guides/auth/social-login/auth-google)
+3. [Supabase keys](https://supabase.com/dashboard/project/pwkcfgelvbkewphlhjzd/settings/api-keys/new)
+    - `pwkcfgelvbkewphlhjzd` is project id

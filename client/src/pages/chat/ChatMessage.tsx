@@ -1,5 +1,5 @@
-import MarkdownRenderer from "../../components/MarkdownRenderer.js";
-import { type Message } from "../../services/apiClient.js";
+import MarkdownRenderer from "@/components/MarkdownRenderer.js";
+import { type Message } from "@/services/apiClient.js";
 
 
 export function ChatMessage({ role, content }: Message) {

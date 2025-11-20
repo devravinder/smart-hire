@@ -27,6 +27,10 @@ declare global {
       MESSAGE_STORAGE: "PG" | "IN_MEMORY";
 
       MODELS_ENV: "LOCAL" | "CLOUD" | "HYBRID";
+
+
+      ///
+      SUPABSE_PROJECT_ID: string
     }
   }
 }

@@ -1,4 +1,4 @@
-import { apiClient } from "@/services/apiClient";
+import { getChatHistory } from "@/services/chatService";
 import { type NonIndexRouteObject } from "react-router";
 
 
@@ -8,13 +8,7 @@ export const chatHistoryLoader: NonIndexRouteObject["loader"] = async ({
 }) => {
 
   if(params.conversationId){
-      const {data:res, error} = await apiClient.GET("/api/history/{conversationId}",{
-        params:{
-          path:{
-            conversationId: params.conversationId
-          }
-        }
-      })
+      const {data:res, error} = await getChatHistory(params.conversationId)
       if(error)
         return []
       return res
