@@ -1,5 +1,3 @@
-import * as React from "react"
-
 import {
   DropdownMenu
 } from "@/components/ui/dropdown-menu"

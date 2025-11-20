@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
-import { ScrollArea } from "../../components/ui/scroll-area.js";
-import { ChatMessage } from "./ChatMessage.js";
-import { ChatInput } from "./ChatInput.js";
-import { apiClient, type Message } from "@/services/apiClient.js";
+import { type Message } from "@/services/apiClient.js";
+import { chatWithAgent } from "@/services/chatService.js";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams, useRevalidator } from "react-router";
+import { ScrollArea } from "@/components/ui/scroll-area.js";
+import { ChatInput } from "./ChatInput.js";
+import { ChatMessage } from "./ChatMessage.js";
 
 export function ChatInterface({ history }: { history: Message[] }) {
   const { conversationId } = useParams();
@@ -19,17 +20,7 @@ export function ChatInterface({ history }: { history: Message[] }) {
     setMessages((prev) => [...prev, userMessage]);
     setIsTyping(true);
 
-    const { data: content, error } = await apiClient.POST(
-      conversationId ? "/api/chat/{conversationId}" : "/api/chat",
-      {
-        params: {
-          path: { conversationId: conversationId! },
-        },
-        body: {
-          message,
-        },
-      }
-    );
+    const { data: content, error } = await chatWithAgent(message, conversationId);
 
     setIsTyping(false);
 

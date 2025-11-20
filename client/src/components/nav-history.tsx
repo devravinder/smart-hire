@@ -21,34 +21,24 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import apiClient from "@/services/apiClient";
+import { deleteAllConversations, deleteConversation } from "@/services/chatService";
 import {
   NavLink,
   useLoaderData,
   useNavigate,
-  useParams,
-  useRevalidator,
 } from "react-router";
 
 export function NavHistory() {
   const { isMobile } = useSidebar();
-  const params = useParams();
   const conversations = useLoaderData<string[]>();
-  const revalidator = useRevalidator();
   const navigate = useNavigate();
 
-  const deleteConversation = async (conversationId: string) => {
-    await apiClient.DELETE("/api/conversations/{conversationId}", {
-      params: {
-        path: {
-          conversationId,
-        },
-      },
-    });
+  const removeConversation = async (conversationId: string) => {
+    await deleteConversation(conversationId);
     await navigate("/chat?refetch=true");
   };
-  const deleteAllConversations = async () => {
-    await apiClient.DELETE("/api/conversations");
+  const removeConversations = async () => {
+    await deleteAllConversations();
     await navigate("/chat?refetch=true");
   };
 
@@ -63,7 +53,7 @@ export function NavHistory() {
             </CollapsibleTrigger>
             <SubDropdownMenu
               isMobile={isMobile}
-              onClick={deleteAllConversations}
+              onClick={removeConversations}
               className=" invisible group-hover/top:visible group-hover/top:bg-sidebar-accent cursor-pointer"
             />
           </div>
@@ -86,7 +76,7 @@ export function NavHistory() {
                       <span className="truncate">{threadId}</span>
                       <SubDropdownMenu
                         isMobile={isMobile}
-                        onClick={() => deleteConversation(threadId)}
+                        onClick={() => removeConversation(threadId)}
                         className="invisible group-hover/sub:visible group-hover/sub:bg-sidebar-accent cursor-pointer"
                       />
                     </span>
