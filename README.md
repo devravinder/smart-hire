@@ -81,6 +81,15 @@ UI: <http://localhost:3000>
 - Qdrant dashboard: <http://localhost:6333/dashboard>
 - Postgres: any SQL client (DBeaver, pgAdmin)
 
+## Known Issues
+
+1. Supabase postgres is not supporting IPv4 freely
+   - so using [nHost](https://nhost.io/) postgres db
+
+2. using Elysia we are uanle to serve complete react app
+   - the bundled react js files are treted as normat text files
+   - so deployed react as a seperate project in vercel
+
 ## 🎯 Done
 
 Fully functional AI recruiter running locally or in the cloud in minutes.
