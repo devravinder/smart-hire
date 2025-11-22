@@ -6,7 +6,7 @@ import chatHistoryLoader from "@/pages/chat/chatHistoryLoader";
 import conversationLoader from "@/pages/chat/conversationLoader";
 import LoginPage from "@/pages/auth/LoginPage";
 
-const Loader = () => <div>Loading...</div>;
+const Loader = () => <div></div>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const Loadable = (Component: ElementType) => (props: any) => {
@@ -38,7 +38,6 @@ export default function Routes() {
           loader: chatHistoryLoader,
           Component: ChatPge,
           shouldRevalidate: ({ currentParams, nextParams }) => {
-            console.log({currentParams, nextParams})
             return currentParams.conversationId !== nextParams.conversationId;
           },
         },
@@ -50,7 +49,7 @@ export default function Routes() {
     },
     { path: "not-found", element: <Page404 /> },
 
-    { path: ANY_MATCH, element: <Navigate to={"/not-found"} replace /> },
+    { path: ANY_MATCH, element: <Navigate to={"/chat"} replace /> },
   ]);
 
   return <RouterProvider router={router} />;
