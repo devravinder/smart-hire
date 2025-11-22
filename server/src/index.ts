@@ -2,32 +2,22 @@ import { Elysia } from "elysia";
 import { cors } from "@elysiajs/cors";
 import { node } from "@elysiajs/node";
 import { openapi } from "@elysiajs/openapi";
-import router from './router.js'
+import router from "./router.js";
 import { errors, globalErrorHandler } from "./errors.js";
 
-const start = () => {
+const setup = () => {
   const app = new Elysia({ adapter: node() });
 
-  const PORT = process.env.PORT || 3001;
-
   app
-    .use(cors())  
+    .get("/",()=>"Hello World")
+    .use(cors())
     .use(openapi())
     .error(errors)
     .onError(globalErrorHandler)
-    .use(router)
-    .listen(PORT);
+    .use(router);
 
-  console.log(`🦊 Elysia is running at ${PORT}`);
+  return app;
 };
 
-const setup = async () => {
-  console.log("pre-start: critical setup ");
-};
-
-setup()
-  .then(start)
-  .catch(() => {
-    console.log("error");
-    process.exit();
-  });
+export const app = setup();
+export default app;

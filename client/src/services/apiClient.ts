@@ -17,7 +17,10 @@ export const withAccessToken=async<T>(callback:WithAccessTokenCallback<T> )=>{
      const session = (await supabase.auth.getSession()).data.session;
 
   const token = session?.access_token;
-  if (!token) throw new Error("Not authenticated");
+  if (!token) {
+    // throw new Error("Not authenticated");
+    console.log("no token")
+  }
 
   return callback({
     headers: {

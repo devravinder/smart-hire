@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "dist",
+  "devCommand": "pnpm run dev",
+  "installCommand": "pnpm install",
+  "framework":"elysia",
+ "rewrites": [
+    { "source": "/api/(.*)", "destination": "/index.js" },
+    { "source": "/(.*)",      "destination": "/index.js" }
+  ]
+}

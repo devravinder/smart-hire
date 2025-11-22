@@ -11,3 +11,7 @@
 6. [Google AI Models](https://ai.google.dev/gemini-api/docs/models)
 7. [Qdrant Cloud Vector DB](https://qdrant.tech/)
 8. [React Supabase](https://supabase.com/docs/guides/auth/quickstarts/react)
+9. [Supabase URL config](https://supabase.com/dashboard/project/pwkcfgelvbkewphlhjzd/auth/url-configuration)
+10. [Supabase IP4 setting](https://supabase.com/dashboard/project/pwkcfgelvbkewphlhjzd/database/settings)
+    - Supabase not supporting ipv4 freely
+    - use nHost db
