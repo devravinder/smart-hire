@@ -18,5 +18,7 @@
     "lib": "@/lib",
     "hooks": "@/hooks"
   },
-  "registries": {}
+  "registries": {
+    "@rare-dev": "https://registry.paravartech.com/{name}.json"
+  }
 }
